@@ -39,3 +39,17 @@ func get_fairy_count() -> int:
 
 func get_game_state() -> String:
 	return game_state
+
+func trigger_ending():
+	game_state = "ending"
+	print("🎉 You've saved all the fairies! 💕")
+	
+	# Show final message
+	var final_message = Label.new()
+	final_message.text = "Thank you for being my fairy guardian... Happy Valentine's Day! 💕"
+	final_message.add_theme_font_size_override("font_size", 36)
+	get_tree().root.get_node("Main/UI").add_child(final_message)
+	final_message.global_position = Vector2(640, 360)
+	
+	# Pause game
+	get_tree().paused = true
