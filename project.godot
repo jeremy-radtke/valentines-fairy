@@ -11,8 +11,15 @@ config_version=5
 [application]
 
 config/name="valentines-fairy"
+run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=180
+window/size/viewport_height=320
+window/stretch/mode="viewport"
 
 [editor]
 
@@ -25,6 +32,6 @@ version_control/autoload_on_startup=true
 
 [rendering]
 
-rendering_device/driver.windows="d3d12"
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+lights_and_shadows/positional_shadow/atlas_size=512
