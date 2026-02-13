@@ -1,55 +1,87 @@
 extends Node
+# GameManager.gd - Global Game State Manager (Singleton/Autoload)
 
-# Singleton pattern - this script runs once for the entire game
+# ============================================
+# SIGNALS
+# ============================================
+
+signal game_state_changed(new_state: String)
+signal fairy_collected(count: int)
+
+# ============================================
+# EXPORTED VARIABLES
+# ============================================
+
+@export var max_fairies: int = 5
+@export var intro_zoom_duration: float = 3.0
+
+# ============================================
+# INTERNAL STATE
+# ============================================
+
 var fairies_collected: int = 0
-var game_state: String = "intro"  # "intro", "gameplay", "ending"
-var max_fairies: int = 5  # How many fairies to catch before ending
+var game_state: String = "INTRO"  # "INTRO", "GAMEPLAY", "ENDING"
+
+# ============================================
+# READY
+# ============================================
 
 func _ready():
-	# Make this node persist across scene changes
-	set_name("GameManager")
-	if not is_node_unique():
-		queue_free()
-		return
-	
-	print("GameManager initialized!")
+	print("🎮 GameManager initialized! (Autoload Singleton)")
+	change_game_state("INTRO")
 
-# Called when player catches a fairy
-func collect_fairy():
+# ============================================
+# STATE MANAGEMENT
+# ============================================
+
+func change_game_state(new_state: String) -> void:
+	"""Change game state and emit signal"""
+	if game_state == new_state:
+		return  # Don't change if already in this state
+	
+	game_state = new_state
+	print("📍 Game State: ", game_state)
+	game_state_changed.emit(game_state)
+	
+	match game_state:
+		"INTRO":
+			print("🎬 Starting intro sequence...")
+		"GAMEPLAY":
+			print("🎮 Gameplay started!")
+		"ENDING":
+			print("🎉 Game ending sequence started!")
+
+# ============================================
+# FAIRY COLLECTION
+# ============================================
+
+func collect_fairy() -> void:
+	"""Called when player catches a fairy"""
 	fairies_collected += 1
-	print("Fairies collected: %d / %d" % [fairies_collected, max_fairies])
+	print("✨ Fairy caught! Total: %d / %d" % [fairies_collected, max_fairies])
+	fairy_collected.emit(fairies_collected)
 	
 	# Check if game is won
 	if fairies_collected >= max_fairies:
 		trigger_ending()
 
-# Called when the intro camera zoom completes
-func start_gameplay():
-	game_state = "gameplay"
-	print("Gameplay started!")
+func trigger_ending() -> void:
+	"""Trigger the game ending sequence"""
+	if game_state == "ENDING":
+		return  # Already ending
+	
+	change_game_state("ENDING")
+	print("💕 ALL FAIRIES SAVED! Game Complete!")
 
-# Trigger the final message and ending
-func trigger_ending():
-	game_state = "ending"
-	print("🎉 Game Complete! Show final message to player!")
+# ============================================
+# GETTERS
+# ============================================
 
-# Get fairy collected count for UI
 func get_fairy_count() -> int:
 	return fairies_collected
 
 func get_game_state() -> String:
 	return game_state
 
-func trigger_ending():
-	game_state = "ending"
-	print("🎉 You've saved all the fairies! 💕")
-	
-	# Show final message
-	var final_message = Label.new()
-	final_message.text = "Thank you for being my fairy guardian... Happy Valentine's Day! 💕"
-	final_message.add_theme_font_size_override("font_size", 36)
-	get_tree().root.get_node("Main/UI").add_child(final_message)
-	final_message.global_position = Vector2(640, 360)
-	
-	# Pause game
-	get_tree().paused = true
+func get_max_fairies() -> int:
+	return max_fairies
