@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dx4yky5o2wfm8"
-path="res://.godot/imported/GandalfHardcore Warrior.png-68c62b1ed0ac297050e64e3c4c6b929c.ctex"
+uid="uid://1nh1ec3eg8jf"
+path="res://.godot/imported/frame_004.png-3078bbc9c477f81975ad3d21a2ad1069.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/GandalfHardcore Warrior.png"
-dest_files=["res://.godot/imported/GandalfHardcore Warrior.png-68c62b1ed0ac297050e64e3c4c6b929c.ctex"]
+source_file="res://sprites/Forest_Princess_Green_Gold_Pink_Mix_Long_Dress_Bla-2/animations/picking-up/south/frame_004.png"
+dest_files=["res://.godot/imported/frame_004.png-3078bbc9c477f81975ad3d21a2ad1069.ctex"]
 
 [params]
 
